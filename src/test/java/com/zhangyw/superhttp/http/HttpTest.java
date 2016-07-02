@@ -1,12 +1,34 @@
 package com.zhangyw.superhttp.http;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 public class HttpTest {
 	public static void main(String[] args) throws IOException {
-		GetMethod get = Http.get("https://luolei.org/");
+		postTest();
+	}
+	
+	public static void getTest() throws IOException{
+		String username = "叶康成";
+		String url = "http://www.jianshu.com/search/do?q="+URLEncoder.encode(username,"utf-8")+"&type=users";
+		System.out.println(url);
+		GetMethod get = Http.getIS().get(url,Http.CLIENT_TYPE_BOWSER);
 		System.out.println(get.getResponseBodyAsString());
+	}
+	public static void postTest() throws IOException{
+		String url = "http://www.tuling123.com/openapi/api";
+		Map param = new HashMap();
+		param.put("key", "ee937e2cc2a71cd93e60fed652212a70");
+		param.put("info", "明天北京天气");
+		param.put("userid", "12345678");
+		System.out.println(param);
+		PostMethod post = Http.getIS().post(url, param,Http.CLIENT_TYPE_BOWSER);
+		System.out.println(post.getResponseBodyAsString());
 	}
 }
