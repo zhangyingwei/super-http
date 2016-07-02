@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
@@ -43,11 +44,7 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public GetMethod get(String url, Map params) {
-		StringBuffer sb = new StringBuffer("?");
-		for(Object key:params.keySet()){
-			sb.append(key).append("=").append(params.get(key)).append("&");
-		}
-		return this.get(url+sb.toString(),CLIENT_TYPE_SIMPLE);
+		return this.get(url,params,CLIENT_TYPE_SIMPLE);
 	}
 	@Override
 	public GetMethod get(String url, Map params,int type) {
@@ -67,6 +64,8 @@ public class Http extends AbsHttp{
 			}
 			HttpClient client = new HttpClient();
 			client.executeMethod(get);
+			Cookie[] cookie = client.getState().getCookies();
+			System.out.println(cookie);
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
