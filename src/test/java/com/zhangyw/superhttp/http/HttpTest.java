@@ -16,11 +16,12 @@ public class HttpTest {
 	
 	public static void getTest() throws IOException{
 		String username = "Ò¶¿µ³É";
-		String url = "http://weixin.sogou.com/weixin?type=1&query=LittleFC&ie=utf8&_sug_=n&_sug_type_=";
+//		String url = "http://weixin.sogou.com/weixin?type=1&query=LittleFC&ie=utf8&_sug_=n&_sug_type_=";
 //		String url = "http://www.jianshu.com/search/do?q="+URLEncoder.encode(username,"utf-8")+"&type=users";
+		String url = "http://www.baidu.com";
 		System.out.println(url);
 		GetMethod get = Http.getIS().get(url,Http.CLIENT_TYPE_BOWSER);
-		System.out.println(get.getResponseBodyAsString());
+		System.out.println(get.getStatusCode());
 	}
 	public static void postTest() throws IOException{
 		String url = "http://www.tuling123.com/openapi/api";

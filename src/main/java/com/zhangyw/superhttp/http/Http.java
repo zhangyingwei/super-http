@@ -6,6 +6,7 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.httpclient.Cookie;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
@@ -16,6 +17,8 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import com.zhangyw.superhttp.browser.SCookie;
+import com.zhangyw.superhttp.browser.SCookieQueue;
 import com.zhangyw.superhttp.https.Https;
 
 public class Http extends AbsHttp{
@@ -23,6 +26,8 @@ public class Http extends AbsHttp{
 //	private PostMethod post = null;
 //	private PutMethod put = null;
 //	private DeleteMethod delete = null;
+	private String cookieCheckOutPoint;
+	private SCookieQueue cookieQueue;
 	public static final int CLIENT_TYPE_BOWSER=0;
 	public static final int CLIENT_TYPE_SIMPLE=1;
 	static{
@@ -30,7 +35,8 @@ public class Http extends AbsHttp{
 	}
 	
 	private Http(){
-		
+		this.cookieQueue = new SCookieQueue();
+		this.cookieQueue.setCheckOutPoint(this.getCookieCheckOutPoint());
 	}
 	private static class HttpHandler{
 		private static Http http = new Http();
@@ -62,10 +68,10 @@ public class Http extends AbsHttp{
 			if(CLIENT_TYPE_BOWSER==type){
 				super.head_Browser(get);
 			}
+			this.cookieQueue.readSCookie(this.getCookieCheckOutPoint());
 			HttpClient client = new HttpClient();
 			client.executeMethod(get);
-			Cookie[] cookie = client.getState().getCookies();
-			System.out.println(cookie);
+			this.cookieQueue.add(new SCookie(get.getRequestHeader("Host").getValue(), client.getState().getCookies())).persist();;
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -95,6 +101,7 @@ public class Http extends AbsHttp{
 			}
 			HttpClient client = new HttpClient();
 			client.executeMethod(post);
+			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -120,6 +127,7 @@ public class Http extends AbsHttp{
 			}
 			HttpClient client = new HttpClient();
 			client.executeMethod(put);
+			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -150,11 +158,26 @@ public class Http extends AbsHttp{
 			}
 			HttpClient client = new HttpClient();
 			client.executeMethod(delete);
+			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return delete;
+	}
+	
+	public String getCookieCheckOutPoint() {
+		if(cookieCheckOutPoint==null){
+			this.cookieCheckOutPoint = "cookie/";
+		}else if(cookieCheckOutPoint.length()==0){
+			this.cookieCheckOutPoint = "cookie/";
+		}else if(!this.cookieCheckOutPoint.endsWith("/")){
+			this.cookieCheckOutPoint += "/";
+		}
+		return this.cookieCheckOutPoint;
+	}
+	public void setCookieCheckOutPoint(String cookieCheckOutPoint) {
+		this.cookieCheckOutPoint = cookieCheckOutPoint;
 	}
 }
