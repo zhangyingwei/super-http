@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.httpclient.Cookie;
+
 public class SCookieQueue {
 	private Set<SCookie> cookies = new HashSet<SCookie>();
 	private String checkOutPoint;
@@ -36,5 +38,14 @@ public class SCookieQueue {
 			}
 		}
 		return this;
+	}
+	public Cookie[] findCookiesByHost(String host){
+		Cookie[] cookie = new Cookie[0];
+		for(SCookie s:this.cookies){
+			if(host.equals(s.getHost())){
+				cookie = s.getCookies();
+			}
+		}
+		return cookie;
 	}
 }

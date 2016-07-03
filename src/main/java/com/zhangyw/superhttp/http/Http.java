@@ -70,8 +70,10 @@ public class Http extends AbsHttp{
 			}
 			this.cookieQueue.readSCookie(this.getCookieCheckOutPoint());
 			HttpClient client = new HttpClient();
+			Cookie[] cs = this.cookieQueue.findCookiesByHost(get.getHostConfiguration().getHost());
+			client.getState().addCookies(cs);
 			client.executeMethod(get);
-			this.cookieQueue.add(new SCookie(get.getRequestHeader("Host").getValue(), client.getState().getCookies())).persist();;
+			this.cookieQueue.add(new SCookie(get.getHostConfiguration().getHost(), client.getState().getCookies())).persist();;
 		} catch (HttpException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
