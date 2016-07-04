@@ -22,14 +22,25 @@ import com.zhangyw.superhttp.browser.SCookieQueue;
 import com.zhangyw.superhttp.https.Https;
 
 public class Http extends AbsHttp{
-//	private GetMethod get = null;
-//	private PostMethod post = null;
-//	private PutMethod put = null;
-//	private DeleteMethod delete = null;
+	/**
+	 * cookie保存位置
+	 */
 	private String cookieCheckOutPoint;
+	/**
+	 * cookie队列
+	 */
 	private SCookieQueue cookieQueue;
+	/**
+	 * 浏览器模式，即每次请求都会在请求头中，附带浏览器信息
+	 */
 	public static final int CLIENT_TYPE_BOWSER=0;
+	/**
+	 * 简单模式，即每次请求不会带浏览器信息
+	 */
 	public static final int CLIENT_TYPE_SIMPLE=1;
+	/**
+	 * 初始化https请求信息
+	 */
 	static{
 		Https.init();
 	}
@@ -41,6 +52,10 @@ public class Http extends AbsHttp{
 	private static class HttpHandler{
 		private static Http http = new Http();
 	}
+	/**
+	 * 获取单例
+	 * @return
+	 */
 	public static Http getIS(){
 		return HttpHandler.http;
 	}
@@ -101,7 +116,10 @@ public class Http extends AbsHttp{
 				post.setRequestBody(ps);
 				post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
 			}
+			this.cookieQueue.readSCookie(this.getCookieCheckOutPoint());
 			HttpClient client = new HttpClient();
+			Cookie[] cs = this.cookieQueue.findCookiesByHost(post.getHostConfiguration().getHost());
+			client.getState().addCookies(cs);
 			client.executeMethod(post);
 			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
@@ -127,7 +145,10 @@ public class Http extends AbsHttp{
 				put.setRequestBody(params.toString());
 				put.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
 			}
+			this.cookieQueue.readSCookie(this.getCookieCheckOutPoint());
 			HttpClient client = new HttpClient();
+			Cookie[] cs = this.cookieQueue.findCookiesByHost(put.getHostConfiguration().getHost());
+			client.getState().addCookies(cs);
 			client.executeMethod(put);
 			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
@@ -139,8 +160,7 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public DeleteMethod delete(String url, JSONObject params) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.delete(url, params, CLIENT_TYPE_SIMPLE);
 	}
 	@Override
 	public DeleteMethod delete(String url, JSONObject params, int type) {
@@ -158,7 +178,10 @@ public class Http extends AbsHttp{
 				delete.setQueryString(ps);
 				delete.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
 			}
+			this.cookieQueue.readSCookie(this.getCookieCheckOutPoint());
 			HttpClient client = new HttpClient();
+			Cookie[] cs = this.cookieQueue.findCookiesByHost(delete.getHostConfiguration().getHost());
+			client.getState().addCookies(cs);
 			client.executeMethod(delete);
 			this.cookieQueue.add(new SCookie(client.getHost(), client.getState().getCookies()));
 		} catch (HttpException e) {
