@@ -22,9 +22,6 @@ public class SCookie {
 	public SCookie(String host,Cookie[] cookies){
 		this.host = host;
 		this.cookies = cookies;
-		for(Cookie c:cookies){
-			System.out.println(c.toExternalForm());
-		}
 	}
 	public SCookie(SCookie sCookie) {
 		this.host = sCookie.getHost();

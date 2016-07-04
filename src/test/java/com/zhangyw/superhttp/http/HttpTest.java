@@ -15,7 +15,7 @@ public class HttpTest {
 	}
 	
 	public static void getTest() throws IOException{
-		String username = "Ò¶¿µ³É";
+		String username = "å“ˆå“ˆ";
 //		String url = "http://weixin.sogou.com/weixin?type=1&query=LittleFC&ie=utf8&_sug_=n&_sug_type_=";
 //		String url = "http://www.jianshu.com/search/do?q="+URLEncoder.encode(username,"utf-8")+"&type=users";
 		String url = "http://www.baidu.com";
@@ -27,7 +27,7 @@ public class HttpTest {
 		String url = "http://www.tuling123.com/openapi/api";
 		Map param = new HashMap();
 		param.put("key", "ee937e2cc2a71cd93e60fed652212a70");
-		param.put("info", "Ã÷Ìì±±¾©ÌìÆø");
+		param.put("info", "ï¿½ï¿½ï¿½ì±±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		param.put("userid", "12345678");
 		System.out.println(param);
 		PostMethod post = Http.getIS().post(url, param,Http.CLIENT_TYPE_BOWSER);
