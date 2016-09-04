@@ -2,9 +2,7 @@ package com.zhangyw.superhttp.http;
 
 import java.io.IOException;
 import java.util.Map;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.httpclient.Cookie;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -15,12 +13,14 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.log4j.Logger;
 
 import com.zhangyw.superhttp.browser.SCookie;
 import com.zhangyw.superhttp.browser.SCookieQueue;
 import com.zhangyw.superhttp.https.Https;
 
 public class Http extends AbsHttp{
+	private Logger logger = Logger.getLogger(Http.class);
 	/**
 	 * cookie保存位置
 	 */
@@ -44,19 +44,9 @@ public class Http extends AbsHttp{
 		Https.init();
 	}
 	
-	private Http(){
+	public Http(){
 		this.cookieQueue = new SCookieQueue();
 		this.cookieQueue.setCheckOutPoint(this.getCookieCheckOutPoint());
-	}
-	private static class HttpHandler{
-		private static Http http = new Http();
-	}
-	/**
-	 * 获取单例
-	 * @return
-	 */
-	public static Http getIS(){
-		return HttpHandler.http;
 	}
 	@Override
 	public GetMethod get(String url) {
@@ -76,6 +66,7 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public GetMethod get(String url,int type){
+		logger.info("GET-"+url);
 		GetMethod get = new GetMethod();
 		try {
 			get.setURI(new URI(url,true,get.getParams().getUriCharset()));
@@ -101,6 +92,8 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public PostMethod post(String url,Map params,int type){
+		logger.info("POST-"+url);
+		logger.info("DATA-"+params);
 		PostMethod post = new PostMethod(url);
 		try {
 			if(CLIENT_TYPE_BOWSER==type){
@@ -135,6 +128,8 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public PutMethod put(String url, JSONObject params, int type) {
+		logger.info("PUT-"+url);
+		logger.info("DATA-"+params);
 		PutMethod put = new PutMethod(url);
 		try {
 			if(CLIENT_TYPE_BOWSER==type){
@@ -163,6 +158,8 @@ public class Http extends AbsHttp{
 	}
 	@Override
 	public DeleteMethod delete(String url, JSONObject params, int type) {
+		logger.info("DELETE-"+url);
+		logger.info("DATA-"+params);
 		DeleteMethod delete = new DeleteMethod(url);
 		try {
 			if(CLIENT_TYPE_BOWSER==type){

@@ -24,7 +24,7 @@ public abstract class AbsHttp {
 	public abstract DeleteMethod delete(String url,JSONObject params,int type);
 	
 	protected void head_Browser(HttpMethod method){
-		method.addRequestHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+//		method.addRequestHeader("Accept", "application/json, text/javascript, */*; q=0.01");
 		method.addRequestHeader("Accept-Language", "zh-CN,zh;q=0.8");
 		method.addRequestHeader("Connection", "keep-alive");
 		method.addRequestHeader("User-Agent", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586 Firefox/43.0");

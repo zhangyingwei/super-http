@@ -20,18 +20,20 @@ public class HttpTest {
 		String url = "http://www.jianshu.com/search/do?q="+URLEncoder.encode(username,"utf-8")+"&type=users";
 //		String url = "http://www.baidu.com";
 		System.out.println(url);
-		GetMethod get = Http.getIS().get(url,Http.CLIENT_TYPE_BOWSER);
+		Http http = new Http();
+		GetMethod get = http.get(url,Http.CLIENT_TYPE_BOWSER);
 		System.out.println(get.getStatusCode());
 		System.out.println(get.getResponseBodyAsString());
 	}
 	public static void postTest() throws IOException{
+		Http http = new Http();
 		String url = "http://www.tuling123.com/openapi/api";
 		Map param = new HashMap();
 		param.put("key", "ee937e2cc2a71cd93e60fed652212a70");
 		param.put("info", "���챱������");
 		param.put("userid", "12345678");
 		System.out.println(param);
-		PostMethod post = Http.getIS().post(url, param,Http.CLIENT_TYPE_BOWSER);
+		PostMethod post = http.post(url, param,Http.CLIENT_TYPE_BOWSER);
 		System.out.println(post.getResponseBodyAsString());
 	}
 }
