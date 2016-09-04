@@ -4,7 +4,24 @@
 	<groupId>com.zhangyw.super-http</groupId>
 	<artifactId>super-http</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+<<<<<<< HEAD
 	<build />
+=======
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<encoding>utf-8</encoding>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+>>>>>>> d004c9e4aff965707edf713573339da4ebfe30f1
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
 		<dependency>
@@ -19,11 +36,14 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+=======
+>>>>>>> d004c9e4aff965707edf713573339da4ebfe30f1
 
 	</dependencies>
 </project>
